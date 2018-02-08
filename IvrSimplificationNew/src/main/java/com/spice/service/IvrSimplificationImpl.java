@@ -1,6 +1,7 @@
 package com.spice.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class IvrSimplificationImpl implements IvrSimplificationInt {
 				objRequestIvr.getCircle(), objRequestIvr.getChannel(),objRequestIvr.getIs_chhota_credit());
 
 		String successVlue = param.getProperty("Success");
-		
+
 		if (response.trim().length() != 0 && response != null) {
 			if (response.equalsIgnoreCase("2001")) {
 
@@ -50,7 +51,6 @@ public class IvrSimplificationImpl implements IvrSimplificationInt {
 				throw new CustomSocketException(uniqueId, objRequestIvr, "2002");
 			}
 
-			System.out.println("********response===="+response);
 			objResponse = parsing(response);
 
 			if (objResponse != null) {
@@ -85,25 +85,20 @@ public class IvrSimplificationImpl implements IvrSimplificationInt {
 
 		try {
 			if (response.trim().length() != 0 && response != null) {
-
 				String split[] = response.split("\\|");
 
 				for (int i = 0; i < split.length; i++) {
-					// System.out.println("in split " + split[i]);
 					String header = split[i];
 					if (split[i].contains("$")) {
 						header = split[i].substring(0, split[i].indexOf("$"));
-						// System.out.println("in header $ "+header);
-
 					}
 
 					if (split[i].contains("*")) {
 
 						header = split[i].substring(0, split[i].lastIndexOf("*"));
-						// System.out.println("in header * "+header);
 					}
 
-					System.out.println("header= " + header);
+					System.out.println("Header= " + header);
 
 					switch (header) {
 
@@ -143,30 +138,15 @@ public class IvrSimplificationImpl implements IvrSimplificationInt {
 
 							String valueCheck[] = split[i].split("\\$");
 							String lengthCheck[] = valueCheck[0].split("\\*");
-							// System.out.println("length of lengthCheck " + lengthCheck.length
-							// + ", lengthCheck[1]) valueCheck " + lengthCheck[1] + "," +
-							// valueCheck.toString());
+							System.out.println("  Default Header="+header+",Length="+lengthCheck[1]);
 							if (Integer.parseInt(lengthCheck[1]) > 0) {
 								for (int k = 0; k < Integer.parseInt(lengthCheck[1]); k++) {
-									// System.out.println("length of lengthCheck " + lengthCheck.length + ",k " + k
-									// + ", lengthCheck[1]) valueCheck " + lengthCheck[1] + ","
-									// + valueCheck[k]);
-
-									// + "Call*3$1-7874504298-0.30-42-23/04/2017
-									// 17:16$2-9724659900-0.30-24-23/04/2017 12:40$3-7874504298-1.20-223-23/04/2017
-									// 09:46|";
-
-									// System.out.println("lengthCheck * "+lengthCheck[k] +","+valueCheck[k+1]);
-
-									String callBalance[] = valueCheck[k + 1].split("~");
-
-									// for(int j=0;j<callBalance.length;j++){
-									System.out.println("Default header= " + header);
+									String[] callBalance = valueCheck[k + 1].split("~");
+									System.out.println("   Default header= " + header+",CallBalance="+Arrays.toString(callBalance));
+									
 									switch (header) {
 
 									case "Call":
-
-										// 111~0.30~60~17/04/2017 21:02
 										Last3Call objLast3Call = new Last3Call();
 										objLast3Call.setNumber(callBalance[0]);
 										objLast3Call.setAmount(callBalance[1]);
@@ -178,7 +158,6 @@ public class IvrSimplificationImpl implements IvrSimplificationInt {
 										objResponse.setLast3call(objListLast3Call);
 
 										break;
-									//
 									case "SMS":
 										// 19/04/201710:28~9985338630~SMS~0.02
 										Last3SMS objLast3SMS = new Last3SMS();
@@ -192,7 +171,6 @@ public class IvrSimplificationImpl implements IvrSimplificationInt {
 										break;
 
 									case "Recharges":
-										// 1.17/04/2017 19:36~Rs.10~Rs.7.70
 										Last3Recharges objLast3Recharges = new Last3Recharges();
 										objLast3Recharges.setDateTime(callBalance[0]);
 										objLast3Recharges.setRechargeValue(callBalance[1]);
@@ -247,18 +225,8 @@ public class IvrSimplificationImpl implements IvrSimplificationInt {
 											objResponse.setOffer(objListOffer);
 										}
 										break;
-
-									/*
-									 * Data*3$II3GV30R152D500 ~Mobile Internet 500MB (3G/4G) . ~1000.0MB ~1000.0M ~
-									 * May 31, 2017 11:59:59 P ~1522$II2GV28R0D200 ~Mobile Internet 200MB (2G) .
-									 * ~200.0MB ~0.0M ~ May 26, 2017 11:59:59 P ~03$SI3GV30R20D500 ~Mobile Internet
-									 * 500MB (3G/4G) . ~500.0MB ~0.0M ~ May 31, 2017 11:59:59 P ~20
-									 */
+																 
 									case "Data":
-										// Alco*2$offername~LocalandSTD@30ps_EX_LL~04/06/2017 23:59
-										/*
-										 * 1-data 2-pack name 3-pack value 4-data balance 5-expiry
-										 */
 										DataPack dataPack = new DataPack();
 										dataPack.setPackDescription(callBalance[1]);
 										dataPack.setDataBalance(callBalance[3]);

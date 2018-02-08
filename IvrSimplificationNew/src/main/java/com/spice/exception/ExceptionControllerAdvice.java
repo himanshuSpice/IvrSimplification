@@ -52,10 +52,6 @@ public class ExceptionControllerAdvice {
 				
 		ivrresponse.setDescription(messageSource.getMessage(ex.getCode(),null,aLocale));
 		
-		/*log.info("Response service->" + ex.getUniqueId() + ",requestId=" + ex.getApi().getRequestId()
-		+ ",msisdn=" + ex.getApi().getMsisdn() + ",circle=" + ex.getApi().getCircle()
-		+ ",channel=" + ex.getApi().getChannel() + ",  " + ex.getApi().toString());*/
-
         return ivrresponse;
     }
 
