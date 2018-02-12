@@ -21,7 +21,12 @@ public class SocketUrl {
 
 	public String urlHandle(long uniqueId, String msisdn, String requestId, String circle, String channel,String is_chhota_credit) {
 		String url="";
-		if(is_chhota_credit.equalsIgnoreCase("y")) {
+		if(is_chhota_credit == null) {
+			url = "GET /?index=" + indexHandle() + "&msisdn=91" + msisdn + "&req_type="
+					+ param.getProperty(channel.trim()) + "&sessionid=" + requestId + "&circleid=" + circle + "&channel="
+					+ channel + "&userType=0";
+		}
+		else if(is_chhota_credit.equalsIgnoreCase("y")) {
 			url = "GET /?index=" + indexHandle() + "&msisdn=91" + msisdn + "&req_type=963"
  + "&sessionid=" + requestId + "&circleid=" + circle + "&channel="
 				+ channel + "&userType=0";
