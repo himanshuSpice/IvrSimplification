@@ -8,25 +8,18 @@
 		</layout>
 	</appender>
 
-<appender name="FILE"
+	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>/home/ussdaps/ussd_log/ivrSimplif/app.log</file>
+		<file>/home/ussdaps/ussd_log/ivrSimplificationLogs/app.log</file>
 
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}- %msg%n</pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<!-- daily rollover. Make sure the path matches the one in the file element 
-				or else the rollover logs are placed in the working directory. -->
-			<fileNamePattern>/home/ussdaps/ussd_log/ivrSimplif/app.log_%d{yyyy-MM-dd}.%i.log
-			</fileNamePattern>
-
-			<timeBasedFileNamingAndTriggeringPolicy
-				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>5MB</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
-			<!-- keep 30 days' worth of history -->
-			<maxHistory>30</maxHistory>
+			<!-- daily rollover -->
+			<fileNamePattern>/home/ussdaps/ussd_log/ivrSimplificationLogs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- retain 200 days logs -->
+			<maxHistory>200</maxHistory>
 		</rollingPolicy>
 	</appender>
 

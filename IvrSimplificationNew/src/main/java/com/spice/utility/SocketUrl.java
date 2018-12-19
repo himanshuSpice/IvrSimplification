@@ -27,7 +27,7 @@ public class SocketUrl {
 					+ channel + "&userType=0";
 		}
 		else if(is_chhota_credit.equalsIgnoreCase("y")) {
-			url = "GET /?index=" + indexHandle() + "&msisdn=91" + msisdn + "&req_type=963"
+			url = "GET /?index=" + indexHandle() + "&msisdn=91" + msisdn + "&req_type=899"
  + "&sessionid=" + requestId + "&circleid=" + circle + "&channel="
 				+ channel + "&userType=0";
 		}else {
